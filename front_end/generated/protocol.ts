@@ -5536,6 +5536,53 @@ export namespace Emulation {
   }
 
   /**
+   * Used to specify sensor types to emulate.
+   * See https://w3c.github.io/sensors/#automation for more information.
+   */
+  export const enum SensorType {
+    AbsoluteOrientation = 'absolute-orientation',
+    Accelerometer = 'accelerometer',
+    AmbientLight = 'ambient-light',
+    Gravity = 'gravity',
+    Gyroscope = 'gyroscope',
+    LinearAcceleration = 'linear-acceleration',
+    Magnetometer = 'magnetometer',
+    Proximity = 'proximity',
+    RelativeOrientation = 'relative-orientation',
+    AbsoluteOrientationEulerAngles = 'absolute-orientation-euler-angles',
+    RelativeOrientationEulerAngles = 'relative-orientation-euler-angles',
+  }
+
+  export interface SensorMetadata {
+    available?: boolean;
+    minimumFrequency?: number;
+    maximumFrequency?: number;
+  }
+
+  export interface SensorReadingSingle {
+    value: number;
+  }
+
+  export interface SensorReadingXYZ {
+    x: number;
+    y: number;
+    z: number;
+  }
+
+  export interface SensorReadingQuaternion {
+    x: number;
+    y: number;
+    z: number;
+    w: number;
+  }
+
+  export interface SensorReading {
+    single?: SensorReadingSingle;
+    xyz?: SensorReadingXYZ;
+    quaternion?: SensorReadingQuaternion;
+  }
+
+  /**
    * Enum of image types that can be disabled.
    */
   export const enum DisabledImageType {
@@ -5710,6 +5757,25 @@ export namespace Emulation {
      * Mock accuracy
      */
     accuracy?: number;
+  }
+
+  export interface GetOverriddenSensorInformationRequest {
+    type: SensorType;
+  }
+
+  export interface GetOverriddenSensorInformationResponse extends ProtocolResponseWithError {
+    requestedSamplingFrequency: number;
+  }
+
+  export interface SetSensorOverrideEnabledRequest {
+    enabled: boolean;
+    type: SensorType;
+    metadata?: SensorMetadata;
+  }
+
+  export interface SetSensorOverrideReadingsRequest {
+    type: SensorType;
+    reading: SensorReading;
   }
 
   export interface SetIdleOverrideRequest {
